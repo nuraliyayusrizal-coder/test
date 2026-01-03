@@ -10,20 +10,18 @@ const Footer = () => {
             
             <div className='flex flex-col md:grid grid-cols-[2fr_1fr_1.5fr] gap-16 text-sm'>
                 
-                {/* Section 1: Logo & Tagline */}
+                {/*  Logo & Tagline */}
                 <div className="flex flex-col items-center md:items-start">
                     <img src={logo} className='w-28 mb-4 hover:rotate-6 transition-transform' alt="Logo" />
                 
-                    <p className='text-[#D87093] font-medium leading-relaxed text-center md:text-left text-xs italic'>
-                        "Where the precision of the Algorithm <br/> meets the soul of the Rhythm." 🎧
-                    </p>
-                </div>
+                
+                <p className="text-3xl font-bold text-[#880E4F] italic">
+                 "Where the precision of the Algorithm <br /> meets the soul of the Rhythm."  </p>
+                </div> 
 
-                
-                
+                {/*gap*/}
                 <div className="flex flex-col items-center md:items-start">
-                   
-                </div>
+                    </div>
 
                 {/* Section 3: Newsletter Box */}
                 <div className="bg-[#FFC1CC]/30 p-8 rounded-[2.5rem] border border-[#FFD1DC] shadow-inner">

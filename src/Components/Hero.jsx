@@ -9,7 +9,7 @@ const Hero = () => {
        <div className="flex flex-col gap-20">
         {/* Hero Section */}
         <div className='flex flex-col sm:flex-row border-border-[#FFD1DC] rounded-[2.5rem] overflow-hidden bg-[#FFC1CC] shadow-2xl transition-all duration-500'>
-        {/*left side*/}
+        {/*left side */}
             <div className='sm:w-1/2  flex items-center justify-center p-12 sm:p-28'>
             <div className='text-[#880E4f]'>
                <div className='flex items-center gap-2 mb-4'>
@@ -32,7 +32,7 @@ const Hero = () => {
                     </div>
             </div>
 
-            {/* right side */}
+            {/* right side :  video vinyl*/}
             <div className='w-full sm:w-1/2 bg-black/10 flex items-center justify-center relative'>
                 <video
                     className='w-full h-full object-cover'
@@ -49,7 +49,7 @@ const Hero = () => {
             </div>
         </div>
 
-        {/* TOP ALBUM SECTION */}
+        {/* Top album section */}
         <div className='my-20 px-4'>
      
         <div className='relative overflow-hidden bg-white/30 backdrop-blur-xl border border-white/40 rounded-[3rem] p-8 md:p-16 shadow-2xl flex flex-col lg:flex-row items-center gap-12'>
@@ -58,14 +58,14 @@ const Hero = () => {
         <div className='absolute -top-20 -right-20 w-80 h-80 bg-[#FFC1CC] rounded-full blur-[120px] opacity-50 pointer-events-none'>
           </div>
 
-        {/*side kiri */}
+        {/*side kiri : image album */}
         <div className='relative z-10 w-64 h-64 md:w-80 md:h-80 flex-shrink-0 group'>
           <div className='absolute inset-0 bg-[#C2185B] rounded-2xl rotate-6 group-hover:rotate-0 transition-all duration-500 opacity-20'>
           </div>
           <img src={top_album} alt="Born Pink Album"  className='w-full h-full object-cover rounded-2xl shadow-2xl group-hover:-translate-y-2 transition-all duration-500'  />
         </div>
 
-        {/*right side : Info Album & Spotify Player*/}
+        {/* side tengah : Info Album & Spotify Player*/}
         <div className='relative z-10 flex-1 text-center lg:text-left'>
           <p className='text-[#C2185B] font-black tracking-[0.4em] text-xs uppercase mb-3'> Top Album : BLACKPINK</p>
           <h2 className='text-5xl md:text-7xl font-black text-[#880E4F] italic leading-none'>
@@ -94,7 +94,7 @@ const Hero = () => {
 
 
 
-     {/* ARTIST SPOTLIGHT  */}
+     {/* artis spotlight : Ariana grande */}
      <div className='my-24 flex flex-col items-center'>
     
     <div className='text-center mb-10'>
@@ -102,7 +102,7 @@ const Hero = () => {
         <h2 className='text-5xl md:text-7xl font-black text-[#C2185B]'>Ariana Grande</h2>
     </div>
 
-    
+    {/*ariana grande image*/}
     <div className='relative w-full max-w-5xl h-[300px] md:h-[550px] rounded-[3rem] overflow-hidden shadow-[0_20px_50px_rgba(194,24,91,0.2)] border-4 border-[#FFD1DC]'>
         <img 
             src={arianagrande} className='w-full h-full object-cover hover:scale-105 transition-all duration-700' alt=""  />
