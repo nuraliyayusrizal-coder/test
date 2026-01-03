@@ -45,7 +45,7 @@ const Navbar = () => {
     };
     return (
         <div className= 'flex items-center justify-between py-5 font-medium w-full px-5 sm:px-[5vw] bg-[#FFF5F7]'>
-        // to back to home page  when click on logo
+        
         <Link to='/'>
         <img src={logo}  className='w-36 cursor-pointer' alt="logo" />
         </Link>
