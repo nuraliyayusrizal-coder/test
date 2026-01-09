@@ -28,7 +28,7 @@ const Login = () => {
     };
 
     try {
-      // IMPORTANT: The URL must point to your XAMPP folder
+      // The URL point to XAMPP folder
       const response = await fetch('http://localhost/test/API/register.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -36,11 +36,15 @@ const Login = () => {
       });
 
       const data = await response.json();
-     if (data.error) {
+      if (data.error) {
         alert("Error: " + data.error);
       } else {
         alert(data.message);
         if (currentState === 'Login') {
+          if(data.user_id){
+            localStorage.setItem('user_id', data.user_id);
+            localStorage.setItem('username', data.username);
+          }
           // Navigates to React homepage (/) after successful login
           navigate('/'); 
         } else {
