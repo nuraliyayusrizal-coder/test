@@ -5,7 +5,6 @@ import arianagrande from "../assets/arianagrande.jpg";
 import bphero from "../assets/bphero.jpg";
 
 const Hero = () => {
-    //PART IKHA
     //To store tracks from MySQL
     const [tracks, setTracks] = useState([]);
 
@@ -104,7 +103,6 @@ const Hero = () => {
         </div>
         </div>
      
-    //PART IKHA
     {/* Database Beats Section */}
         <div className='my-24 px-4 max-w-7xl mx-auto w-full'>
             <div className='flex items-center gap-4 mb-10'>

@@ -35,7 +35,8 @@ if (isset($data['signIn'])) {
     
     if ($res->num_rows > 0) {
         $row = $res->fetch_assoc();
-        echo json_encode(["message" => "Login Success", "username" => $row['username']]);
+        echo json_encode(["message" => "Login Success", "username" => $row['username'], "user_id" => $row['user_id']
+        ]);
     } else {
         echo json_encode(["error" => "Wrong Email/Password"]);
     }
