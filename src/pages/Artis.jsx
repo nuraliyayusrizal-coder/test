@@ -1,13 +1,17 @@
+//to display artis context
 import React, { useState } from 'react';
 import { useContext } from 'react';
 import {Artiscontext} from '../Context/Artiscontext';
 import { useEffect } from 'react';
 
 const Artis = () => {
+  //to access list of artis 
   const {artisdata} = useContext(Artiscontext);
+  //state to show filter that has been selected
   const [filterArtist, setFilterArtis]=useState([]);
+  //state to store genre 
   const [genre, setGenre] =useState('');
-
+  //to filter artis based on selected genre 
   const applyFilter = () => {
     if (!artisdata) return;
 
@@ -21,7 +25,7 @@ const Artis = () => {
     setFilterArtis(artiscopy);
   };
 
-  
+  //to apply filter whenever filter is selected
   useEffect(() => {
     applyFilter();
   }, [genre, artisdata]);
@@ -33,7 +37,7 @@ const Artis = () => {
       <div className='w-full sm:w-1/4'>
         <h2 className='font-black text-2xl text-[#880E4F] mb-6'>Filter By</h2>
         
-        
+        {/* filter (genre) dropdown*/}
         <select 
           value={genre}
           onChange={(e) => setGenre(e.target.value)}
@@ -47,15 +51,13 @@ const Artis = () => {
         </select>
       </div>
     
-      {/* Right side - Artis List */}
+      {/* Artis List display by grid */}
       <div className='flex-1'>
         <div className='flex justify-between items-center mb-6'>
           <h1 className='text-[#880E4F] font-black text-2xl uppercase tracking-tighter'>
             {genre === '' ? 'Artist' : `${genre} Artis`}
           </h1>
         </div>
-
-        
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10'>
           {filterArtist.map((item) => (
             <div key={item.id} className='group cursor-pointer'>
@@ -66,6 +68,7 @@ const Artis = () => {
                   className='w-full h-full object-cover group-hover:scale-110 transition-all duration-700 ease-in-out' 
                 />
               </div>
+              {/*to display artis detail(genre & name)*/}
               <div className='mt-4 text-center'>
                 <p className='text-[10px] text-pink-400 font-bold uppercase mb-1'>{item.genre}</p>
                 <h3 className='font-black text-[#880E4F] uppercase text-sm group-hover:text-pink-600 transition-colors'>

@@ -1,33 +1,26 @@
-import React from "react";
+// to store music context to display on music page 
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
 {/* blackpink album */ }
 import bp_a1 from "../assets/bp_a1.jpg";
 import bp_a2 from "../assets/bp_a2.png";
-import bp_a3 from "../assets/bp_a3.jpg";
-import bp_a4 from "../assets/bp_a4.png";
-import bp_a5 from "../assets/bp_a5.png";
+import bp_a3 from "../assets/bp_a3.png";
 {/* bts album*/}
 import bts_a1 from "../assets/bts_a1.png";
-import bts_a4 from "../assets/bts_a4.png";
-import bts_a5 from "../assets/bts_a5.jpg";
+import bts_a2 from "../assets/bts_a2.png";
+import bts_a3 from "../assets/bts_a3.jpg";
 {/*treasure album*/}
 import trea_a1 from "../assets/trea_a1.png";
 import trea_a2 from "../assets/trea_a2.png";
 import trea_a3 from "../assets/trea_a3.png";
-import trea_a4 from "../assets/trea_a4.jpg";
-import trea_a5 from "../assets/trea_a5.jpg";
-import trea_a6 from "../assets/trea_a6.png";
-import trea_a7 from "../assets/trea_a7.png";
-import trea_a8 from "../assets/trea_a8.png";
 {/*twice album */}
 import twice_a1 from "../assets/twice_a1.png";
 import twice_a2 from "../assets/twice_a2.jpg";
-import twice_a3 from "../assets/twice_a3.jpg";
-import twice_a4 from "../assets/twice_a4.jpg";
 {/*justin bieber album */}
 import jb_a1 from "../assets/jb_a1.png";
 import jb_a2 from "../assets/jb_a2.png";
+import jb_a4 from "../assets/jb_a4.png";
 import jb_a6 from "../assets/jb_a6.png";
 import jb_a7 from "../assets/jb_a7.jpg";
 {/*dua lipa album */}
@@ -77,7 +70,7 @@ const MusiccontextProvider = (props) => {
         artis: "Blackpink",
         desciption:"The Born Pink album version comes in Black , White and Pink box editions. Each includes a CD, a thick photobook, random photocard, postcard, poster, and extra goodies like stickers ",
         price:500,
-        image :[bp_a1, bp_a2,bp_a3],
+        image :[bp_a1],
         genre:"Kpop",
         category:"Album", 
     },
@@ -88,7 +81,7 @@ const MusiccontextProvider = (props) => {
         artis: "Blackpink",
         desciption:"BLACKPINK's first vinyl release",
         price:200,
-        image :[bp_a4],
+        image :[bp_a2],
         genre:"Kpop",
         category:"Vinyl", 
     },
@@ -99,7 +92,7 @@ const MusiccontextProvider = (props) => {
         artis: "Blackpink",
         desciption:"Special physical edition to celebrate BLACKPINK’s comeback before The Album",
         price:150,
-        image :[bp_a5],
+        image :[bp_a3],
         genre:"Kpop",
         category:"CD", 
     },
@@ -121,7 +114,7 @@ const MusiccontextProvider = (props) => {
         artis: "Bts",
         desciption:"A collectible K‑pop album featuring BTS’s Love Yourself series. Includes CD, photobook, random photocard, poster, and lyric paper. Available in multiple versions with unique designs and inclusions",
         price:550,
-        image :[bts_a5],
+        image :[bts_a3],
         genre:"Kpop",
         category:"Album", 
     },
@@ -132,7 +125,7 @@ const MusiccontextProvider = (props) => {
         artis: "Bts",
         desciption:"The Boy In Luv CD single (2014) includes Japanese versions of Boy In Luv, N.O., and Just One Day, with regular CD and limited CD+DVD editions",
         price:550,
-        image :[bts_a4],
+        image :[bts_a2],
         genre:"Kpop",
         category:"CD", 
     },
@@ -143,14 +136,14 @@ const MusiccontextProvider = (props) => {
         artis: "Twice",
         desciption:"TWICEcoaster: Lane 2 is TWICE’s special album featuring the bubbly hit Knock Knock. It comes in two physical versions with photobooks, photocards, and posters, making it a fan-favorite collectible",
         price:1000,
-        image :[twice_a2,twice_a3,twice_a4],
+        image :[twice_a2],
         genre:"Kpop",
         category:"Album", 
     },
     //twice//
     {
         _id: "m008",
-        name:"TWICEcoaster: Lane 2",
+        name:"The Candy Pop",
         artis: "Twice",
         desciption:"The Candy Pop CD single (2018) by TWICE includes the title track, Brand New Girl, and instrumentals",
         price:50,
@@ -165,7 +158,7 @@ const MusiccontextProvider = (props) => {
         artis: "Treasure",
         desciption:"The Reboot Black Edition is TREASURE’s premium photobook album with a dark, stylish design and collectible inclusions",
         price:900,
-        image :[trea_a1,trea_a4,trea_a7],
+        image :[trea_a1],
         genre:"Kpop",
         category:"Album", 
     },
@@ -175,7 +168,7 @@ const MusiccontextProvider = (props) => {
         artis: "Treasure",
         desciption:"The Reboot Gray Edition is TREASURE’s photobook album with a silver-gray design, CD, photobook, lyric cards, postcards, poster, and random photocard",
         price:900,
-        image :[trea_a3,trea_a8],
+        image :[trea_a3],
         genre:"Kpop",
         category:"Album", 
     },
@@ -185,7 +178,7 @@ const MusiccontextProvider = (props) => {
         artis: "Treasure",
         desciption:"The Reboot White Edition is TREASURE’s photobook album with a clean white design, CD, photobook, lyric cards, postcards, poster, and random photocard",
         price:900,
-        image :[trea_a2,trea_a5,trea_a6],
+        image :[trea_a2],
         genre:"Kpop",
         category:"Album", 
     },
@@ -211,13 +204,13 @@ const MusiccontextProvider = (props) => {
     },
      {//justin bieber//
         _id: "m014",
-        name:"The Believe",
+        name:"The Purpose",
         artis: "Justin Bieber",
-        desciption:"The Believe vinyl is a 2‑LP reissue of Justin Bieber’s 2012 album, released in 2016 with premium packaging, lyric inserts, and all original tracks",
-        price:200,
-        image :[jb_a2],
+        desciption:"The Purpose vinyl is a 2‑LP reissue of Justin Bieber’s 2012 album, released in 2016 with premium packaging, lyric inserts, and all original tracks",
+        price:55,
+        image :[jb_a4],
         genre:"Pop",
-        category:"Vinyl", 
+        category:"CD", 
     },
     {//justin bieber//
         _id: "m015",
@@ -341,9 +334,9 @@ const MusiccontextProvider = (props) => {
     },
     {//Awie//
         _id: "m027",
-        name:"Sayu",
+        name:"Satu",
         artis: "Awie",
-        desciption:"Sayu is Awie’s third solo CD, showcasing his softer, emotional side compared to the raw rock energy of Wings.",
+        desciption:"Satu is Awie’s third solo CD, showcasing his softer, emotional side compared to the raw rock energy of Wings.",
         price:100,
         image :[awie_a2],
         genre:"M-90s",
@@ -482,28 +475,54 @@ const MusiccontextProvider = (props) => {
     
 
 ]
+    // add to cart state to store add to cart items (music/merch)
+    const [cartItems, setCartItems] = useState({});
+    //order state to store list of order 
+    const [orders, setOrders] = useState([]);
+    // serach state 
+    const [search, setSearch] = useState('');
+    // show search state
+    const [showSearch, setShowSearch] = useState(false);
 
+    // Function to add To Cart
+    const addToCart = async (itemId) => {
+        let cartData = structuredClone(cartItems);
+        if (cartData[itemId]) {
+            cartData[itemId] += 1;
+        } else {
+            cartData[itemId] = 1;
+        }
+        setCartItems(cartData);
+        alert("Successfully added to cart!");
+    };
 
-const [cartItems, setCartItems] = useState({});
+    // Function to  update Quantity
+    const updateQuantity = async (itemId, quantity) => {
+        let cartData = structuredClone(cartItems);
+        cartData[itemId] = quantity;
+        setCartItems(cartData);
+    };
 
-const addToCart = (itemId) => {
-    
-    let cartData = { ...cartItems };
+    // Function to  get Cart Count 
+    const getCartCount = () => {
+        return Object.values(cartItems).reduce((total, qty) => total + qty, 0);
+    };
 
-    if (cartData[itemId]) {
-        cartData[itemId] += 1;
-    } else {
-        cartData[itemId] = 1;
-    }
-    setCartItems(cartData);
-    alert("Successfully added to cart!");
-};
-    
-const value = { 
+    // to allow this data to be access
+    const value = { 
         musicItem, 
         cartItems, 
         addToCart,
-        currency: "RM" 
+        currency: "RM", 
+        updateQuantity,
+        getCartCount,
+        setCartItems,
+        orders,
+        setOrders,
+        search,
+        setSearch,
+        showSearch,
+        setShowSearch
     };
 
     return (
@@ -511,10 +530,6 @@ const value = {
             {props.children}
         </Musiccontext.Provider>
     );
-
-    
 };
 
 export default MusiccontextProvider; 
-
-    

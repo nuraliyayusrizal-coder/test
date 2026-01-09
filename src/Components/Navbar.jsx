@@ -1,4 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
+import { useState } from 'react';
+import { useContext } from 'react';
 import logo from '../assets/logo.png';
 import searchpinky from '../assets/searchpinky.png';
 import profilepinky from '../assets/profilepinky.png';
@@ -8,72 +10,104 @@ import drop from '../assets/drop.png';
 import {Link} from 'react-router-dom';
 import {NavLink} from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import { Musiccontext } from '../Context/Musiccontext';
+import { Merchcontext } from '../Context/Merchcontext';
 
 
 const Navbar = () => {
 
    const[visible,setVisible]=useState(false);
    const navigate = useNavigate();
+
+    const { cartItems: musicCart } = useContext(Musiccontext);
+    const { cartItems: merchCart } = useContext(Merchcontext);
+    const { setShowSearch } = useContext(Musiccontext); 
+
+    // Function to calculate cart count to display on the cart icon
+    const getCartCount = () => {
+        let totalCount = 0;
+
+        // to calculate add to cart music
+        for (const _id in musicCart) {
+            if (musicCart[_id] > 0) {
+                totalCount += musicCart[_id];
+            }
+        }
+
+        // to calculate add to cart merch
+        for (const _id in merchCart) {
+            if (merchCart[_id] > 0) {
+                totalCount += merchCart[_id];
+            }
+        }
+
+        return totalCount;
+    };
     return (
         <div className= 'flex items-center justify-between py-5 font-medium w-full px-5 sm:px-[5vw] bg-[#FFF5F7]'>
-
+        {/* to back to home page  when click on logo*/}
         <Link to='/'>
         <img src={logo}  className='w-36 cursor-pointer' alt="logo" />
         </Link>
 
-
+            {/*menu on the navbar*/}
             <ul className='hidden sm:flex gap-5 text-sm text-pink-500'>
-
+                {/*music menu*/}
                 <NavLink to="/music" className='flex flex-col items-center gap-1'>
                     <p>Music</p>
                     <hr className='w-2/4 border-none h-[1.5px] bg-pink-500 hidden'/>
                 </NavLink> 
-
+                 {/*artist menu*/}
                 <NavLink to="/artist" className='flex flex-col items-center gap-1'>
-                    <p>Artis</p>
+                    <p>Artist</p>
                     <hr className='w-2/4 border-none h-[1.5px] bg-pink-500 hidden'/>
                 </NavLink> 
-
+                 {/*merch menu */}
                 <NavLink to="/merch" className='flex flex-col items-center gap-1 '>
                     <p>Merch</p>
                     <hr className='w-2/4 border-none h-[1.5px] bg-pink-500 hidden'/>
                 </NavLink> 
         </ul> 
-
+        {/*to insert search pinky pinky icon*/}
         <div className='flex items-center gap-6'>
-           <img src={searchpinky} className='w-7 h-7 cursor-pointer' alt="" />
-          
+           <img 
+           onClick={() => setShowSearch(true)}
+           src={searchpinky} className='w-7 h-7 cursor-pointer' alt="" />
+          {/*to insert profile pinky pinky*/}
            <div className='group relative'>
                <Link to='/login'><img className='w-5 cursor-pointer' src={profilepinky} alt="" /></Link>
                 <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-2 z-[100]'>
                     <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-purple-50 text-purple-400 shadow-sm border border-purple-100'>
+                        {/*to insert option on profile icon*/}
                         <p className='cursor-pointer hover:text-pink-500'>My Profile </p>
-                        <p className='cursor-pointer hover:text-pink-500'>Orders </p>
+                        {/*to link Orders option with order page*/}
+                        <Link to='/orders'><p className='cursor-pointer hover:text-pink-500'>Orders </p></Link>
                             <p className='cursor-pointer hover:text-pink-500'>Logout </p>
-                       
-
                         
                     </div>
                 </div>
            </div>
-           
-            <Link to='/cart'className='relative'>
-                <img src={cart} className='w-7 h-7 cursor-pointer' alt="" />
-                <p className={`absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-pink-500 text-white aspect-square rounded-full text-[8px]`}>3</p>
-            </Link>
-            <img onClick={() => setVisible(true)} src={menu} className='w-7 h-7 cursor-pointer sm:hidden' alt="" />
+           {/*to link cart icon with cart page*/}
+           <Link to='/cart' className='relative'>
+                    <img  src={cart} className='w-7 h-7 cursor-pointer' alt="" />
+                    {/* to link with getCartCount function to ensure cart count can display on the cart icon */}
+                    {getCartCount() > 0 && (
+                        <p className='absolute right-[-5px] bottom-[-5px] w-4 text-center leading-4 bg-pink-500 text-white aspect-square rounded-full text-[8px]'>
+                            {getCartCount()}
+                        </p>
+                    )}
+                </Link>
        
         </div> 
 
-        {/* sidebar menu */}
-        <div className={`absolute top-0 right-0 bottom-0 overflow-hidden bg-[#FFF5F7] transition-all duration-300 ${visible ? 'w-full' : 'w-0'} z-50`}>
-             <div className='flex flex-col text-[#FF6B95]'>
-        
-              {/*  Back Button */}
-                 <div onClick={() => setVisible(false)} className='flex items-center gap-4 p-4 cursor-pointer hover:bg-pink-100 transition-colors'>
-                 <img className='h-4 rotate-180 opacity-70' src={drop} alt="" />
-                 <p className='font-medium'>Back</p>
-                 </div>
+        {/* small sidebar menu for small screen like smartphone*/}
+            <img onClick={() => setVisible(true)} src={menu} className='w-5 cursor-pointer sm:hidden' alt="menu" />
+            <div className={`fixed top-0 right-0 bottom-0 bg-white transition-all duration-300 z-[100] ${visible ? 'w-full' : 'w-0'}`}>
+                <div className='flex flex-col text-gray-600 h-full overflow-hidden'>
+                    {/* back button*/}
+                    <div onClick={() => setVisible(false)} className='flex items-center gap-4 p-5 cursor-pointer border-b bg-pink-50'>
+                        <img className='h-4 rotate-180 opacity-70' src={drop} alt="back icon" />
+                    </div>
 
               {/* Menu Links */}
               <NavLink onClick={() => setVisible(false)} className='py-3 pl-8 border-b border-pink-100 hover:bg-pink-50 transition-all font-medium' to='/music'> Music </NavLink>
@@ -82,8 +116,8 @@ const Navbar = () => {
              </div>
         </div>
       
-      
        </div>
     )
 }
-export default Navbar;
+
+export default Navbar; 

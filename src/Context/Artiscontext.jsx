@@ -1,3 +1,4 @@
+{/* to store artis context to display on artis page */}
 import React from "react";
 import { createContext } from "react";
 import blackpink1 from '../assets/blackpink1.jpg';
