@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import {Artiscontext} from '../Context/Artiscontext';
 import { useEffect } from 'react';
 
@@ -58,7 +59,11 @@ const Artis = () => {
         
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10'>
           {filterArtist.map((item) => (
-            <div key={item.id} className='group cursor-pointer'>
+            <Link 
+              to={`/artist/${item.name}`} 
+              key={item.id} 
+              className='group cursor-pointer'
+            >
               <div className='overflow-hidden rounded-2xl aspect-[3/4] border-2 border-pink-50 shadow-sm'>
                 <img 
                   src={item.img} 
@@ -72,7 +77,7 @@ const Artis = () => {
                   {item.name}
                 </h3>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
