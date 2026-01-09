@@ -12,6 +12,7 @@ import Music from './pages/Music';
 import Footer from './Components/Footer';
 import Productdetails from './pages/Productdetails';
 import Searchbar from './Components/Searchbar';
+
 const App = () => {
   return (
     <div className='bg-[#FFF5F7] min-h-screen px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>

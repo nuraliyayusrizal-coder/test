@@ -1,10 +1,22 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import vinyl from "../assets/vinyl.mp4";
 import top_album from "../assets/top_album.png";
 import arianagrande from "../assets/arianagrande.jpg";
 import bphero from "../assets/bphero.jpg";
 
 const Hero = () => {
+    //PART IKHA
+    //To store tracks from MySQL
+    const [tracks, setTracks] = useState([]);
+
+    useEffect(() => {
+        // 3. Fetch data from your Express backend
+        fetch('http://localhost:5000/api/tracks')
+            .then(res => res.json())
+            .then(data => setTracks(data))
+            .catch(err => console.error("Error fetching tracks:", err));
+    }, []);
+
     return (
        <div className="flex flex-col gap-20">
         {/* Hero Section */}
@@ -91,8 +103,29 @@ const Hero = () => {
         </div>
         </div>
         </div>
+     
+    //PART IKHA
+    {/* Database Beats Section */}
+        <div className='my-24 px-4 max-w-7xl mx-auto w-full'>
+            <div className='flex items-center gap-4 mb-10'>
+                <h2 className='text-4xl font-black text-[#C2185B] uppercase italic'>
+                    Latest <span className='text-[#880E4F]'>Beats</span>
+                </h2>
+                <div className='flex-1 h-[2px] bg-[#FFD1DC]'></div>
+            </div>
 
-
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
+                {tracks.length > 0 ? (
+                    tracks.map((track) => (
+                        <div key={track.id} className='bg-white/40 backdrop-blur-md p-6 rounded-[2.5rem] ...'>
+                            {/* Track details: title, bpm, price */}
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-[#D87093]">Loading beats from database...</p>
+                )}
+            </div>
+        </div> 
 
      {/* artis spotlight : Ariana grande */}
      <div className='my-24 flex flex-col items-center'>
