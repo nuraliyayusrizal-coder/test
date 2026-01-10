@@ -1,5 +1,5 @@
 import React from 'react';
-import  {useContext} from 'react';
+import { useContext } from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { Musiccontext } from '../Context/Musiccontext';
@@ -11,7 +11,7 @@ import fpx_logo from '../assets/fpx_logo.png';
 const PlaceOrder = () => {
     const navigate = useNavigate();
 
-    // add state for form
+    // State for form
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -50,8 +50,8 @@ const PlaceOrder = () => {
         setFormData({ ...formData, [name]: value });
     };
     
-    // to get music & merch data
-    const { currency, cartItems: musicCart, musicItem, setCartItems: setMusicCart, orders, setOrders} = useContext(Musiccontext);
+    // Take context
+    const { currency, cartItems: musicCart, musicItem, setCartItems: setMusicCart, setOrders} = useContext(Musiccontext);
     const { cartItems: merchCart, merchItem, setCartItems: setMerchCart } = useContext(Merchcontext);
     const [method, setMethod] = useState('cod');
 
@@ -67,13 +67,13 @@ const PlaceOrder = () => {
     // Count Subtotal
     const calculateSubtotal = () => {
         let total = 0;
-        for (const id in musicCart) {//for music
+        for (const id in musicCart) {
             if (musicCart[id] > 0) {
                 const item = musicItem.find(p => p._id === id);
                 if (item) total += item.price * musicCart[id];
             }
         }
-        for (const id in merchCart) {// for merch
+        for (const id in merchCart) {
             if (merchCart[id] > 0) {
                 const item = merchItem.find(p => p._id === id);
                 if (item) total += item.price * merchCart[id];
@@ -197,6 +197,7 @@ const PlaceOrder = () => {
             cart_items: currentOrder 
         };
 
+        // Send to backend
         try {
             const response = await fetch('http://localhost/test/API/order.php', {
                 method: 'POST',
@@ -205,9 +206,16 @@ const PlaceOrder = () => {
             });
             const result = await response.json();
             
-            if (!result.message) {
+            if (result.message) {
+                setOrders((prev) => [...prev, ...currentOrder]);
+                alert("Your order has been successfully placed!");
+                
+                // Reset cart
+                setMusicCart({});
+                setMerchCart({});
+                navigate('/orders');
+            } else {
                 alert("Error: " + result.error);
-                return; 
             }
         } catch (error) {
             console.error("Database connection failed", error);
@@ -236,16 +244,15 @@ const PlaceOrder = () => {
                 <div className='flex gap-3'>
                     <input name='firstName' value={formData.firstName} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="text" placeholder='First name' required />
                     <input name='lastName' value={formData.lastName} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Last name' required />
+                </div>
+                <input name='email' value={formData.email} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="email" placeholder='Email address' required />
+                <input name='street' value={formData.street} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Street' required />
+                <div className='flex gap-3'>
+                    <input name='city' value={formData.city} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="text" placeholder='City' required />
+                    <input name='state' value={formData.state} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="text" placeholder='State' required />
+                </div>
+                <input name='phone_num' value={formData.phone_num} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Phone number' required />
             </div>
-            <input name='email' value={formData.email} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="email" placeholder='Email address' required />
-            <input name='street' value={formData.street} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="text" placeholder='Street' required />
-            <div className='flex gap-3'>
-                <input name='city' value={formData.city} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="text" placeholder='City' required />
-                <input name='state' value={formData.state} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="text" placeholder='State' required />
-            </div>
-            <input name='phone_num' value={formData.phone_num} onChange={onChangeHandler} className='border border-pink-200 rounded py-1.5 px-3.5 w-full' type="number" placeholder='Phone number' required />
-
-        </div>
 
             {/* Cart Totals & Payment Method */}
             <div className='mt-8'>
@@ -356,4 +363,5 @@ const PlaceOrder = () => {
     );
 };
 
+export default PlaceOrder;
 export default PlaceOrder;

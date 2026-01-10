@@ -45,8 +45,8 @@ const Login = () => {
             localStorage.setItem('user_id', data.user_id);
             localStorage.setItem('username', data.username);
           }
-          // Navigates to React homepage (/) after successful login
-          navigate('/'); 
+          // Redirect to home page after login
+          window.location.href = '/'; 
         } else {
           // After signing up, switch the form to Login mode
           setCurrentState('Login'); 
