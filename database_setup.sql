@@ -5,8 +5,8 @@
 CREATE DATABASE IF NOT EXISTS algorythm_beats;
 USE algorythm_beats;
 
--- Create users table for authentication
-CREATE TABLE IF NOT EXISTS users (
+-- Create user table for authentication
+CREATE TABLE IF NOT EXISTS user (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(100) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS orders (
     status VARCHAR(20) NOT NULL DEFAULT 'Pending',
     total_price DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE
 );
 
 -- Create order_items table
@@ -54,11 +54,11 @@ CREATE TABLE IF NOT EXISTS cart (
     quantity INT NOT NULL,
     image_url VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE
 );
 
 -- Insert sample user for testing (password: test123)
-INSERT INTO users (username, email, password_hash) VALUES 
+INSERT INTO user (username, email, password_hash) VALUES 
 ('testuser', 'test@example.com', 'cc03e747a6afbbcbf8be7668acfebee5');
 
 SELECT 'Database setup completed successfully!' AS message;
