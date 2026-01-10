@@ -403,7 +403,7 @@ const MusiccontextProvider = (props) => {
     },
      {//Yuna//
         _id: "m034",
-        name:"",
+        name:"Nocturnal",
         artis: "Yuna",
         desciption:"A dreamy pop‑R&B album in a jewel case with her minimalist portrait on the cover, a lyric booklet inside, and 12 tracks including Rescue, Falling, and Come Back.",
         price:80,
@@ -471,32 +471,97 @@ const MusiccontextProvider = (props) => {
         genre:"Mpop",
         category:"CD", 
     },
-    
 
-]
+];
 
     const [cartItems, setCartItems] = useState({});
     const [orders, setOrders] = useState([]);
     const [search, setSearch] = useState('');
     const [showSearch, setShowSearch] = useState(false);
 
+    // Sync cart from database on mount
+    useEffect(() => {
+        const fetchUserCart = async () => {
+            const userId = localStorage.getItem('user_id');
+            if (userId) {
+                try {
+                    const response = await fetch(`http://localhost/test/API/get_cart.php?user_id=${userId}`);
+                    const data = await response.json();
+                    
+                    let tempCart = {};
+                    if (Array.isArray(data)) {
+                        data.forEach(item => {
+                            if (item.product_id.startsWith('m') && !item.product_id.startsWith('mh')) {
+                                tempCart[item.product_id] = parseInt(item.quantity);
+                            }
+                        });
+                    }
+                    setCartItems(prev => ({ ...prev, ...tempCart }));
+                } catch (error) {
+                    console.error("Error, cannot sync from database:", error);
+                }
+            }
+        };
+        fetchUserCart();
+    }, []);
+
     // Function to add To Cart
     const addToCart = async (itemId) => {
         let cartData = structuredClone(cartItems);
-        if (cartData[itemId]) {
-            cartData[itemId] += 1;
-        } else {
-            cartData[itemId] = 1;
-        }
+        cartData[itemId] = (cartData[itemId] || 0) + 1;
         setCartItems(cartData);
-        alert("Successfully added to cart!");
+
+    // Store to database
+    const userId = localStorage.getItem('user_id');
+    const product = musicItem.find(p => p._id === itemId);
+
+        if (userId && product) {
+            try {
+                await fetch('http://localhost/test/API/add_to_cart.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        product_id: itemId,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image[0]
+                    })
+                });
+                alert("Successfully added to cart!");
+            } catch (error) {
+                console.error("Error, cannot save into database:", error);
+            }
+        }
     };
 
     // Function to  update Quantity
     const updateQuantity = async (itemId, quantity) => {
         let cartData = structuredClone(cartItems);
-        cartData[itemId] = quantity;
+        if (quantity === 0) {
+            delete cartData[itemId];
+        } else {
+            cartData[itemId] = quantity;
+        }
         setCartItems(cartData);
+    
+    // Update Database
+    const userId = localStorage.getItem('user_id');
+        if (userId) {
+            try {
+                await fetch('http://localhost/test/API/update_cart.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        product_id: itemId,
+                        quantity: quantity
+                    })
+                });
+            } catch (error) {
+                console.error("Error, cannot update to database:", error);
+            }
+        }
     };
 
     // Function to  get Cart Count 
@@ -504,7 +569,6 @@ const MusiccontextProvider = (props) => {
         return Object.values(cartItems).reduce((total, qty) => total + qty, 0);
     };
 
-    
     const value = { 
         musicItem, 
         cartItems, 
