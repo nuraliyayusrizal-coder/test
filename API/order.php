@@ -14,20 +14,21 @@ if (isset($data['submitOrder'])) {
     $user_id = $conn->real_escape_string($data['user_id']);
     $fName   = $conn->real_escape_string($data['firstName']);
     $lName   = $conn->real_escape_string($data['lastName']);
-    $email   = $conn->real_escape_address = $conn->real_escape_string($data['email_address']);
+    $email   = $conn->real_escape_string($data['email_address']);
     $street  = $conn->real_escape_string($data['street']);
     $city    = $conn->real_escape_string($data['city']);
     $state   = $conn->real_escape_string($data['state']);
     $phone_num = $conn->real_escape_string($data['phone_num']);
     $payment = $conn->real_escape_string($data['payment_method']);
+    $status  = $conn->real_escape_string($data['status']);
     
     // From React- default with RM8 delivery fee
     $total_price = $conn->real_escape_string($data['total_price']);
     
     $items = $data['cart_items']; 
 
-    $sqlOrder = "INSERT INTO orders (user_id, firstName, lastName, email_address, street, city, state, phone_num, payment_method, total_price) 
-                 VALUES ('$user_id', '$fName', '$lName', '$email', '$street', '$city', '$state', '$phone_num', '$payment', '$total_price')";
+    $sqlOrder = "INSERT INTO orders (user_id, firstName, lastName, email, street, city, state, phone_num, payment_method, status, total_price) 
+                 VALUES ('$user_id', '$fName', '$lName', '$email', '$street', '$city', '$state', '$phone_num', '$payment', '$status', '$total_price')";
 
     if ($conn->query($sqlOrder) === TRUE) {
         $order_id = $conn->insert_id; 

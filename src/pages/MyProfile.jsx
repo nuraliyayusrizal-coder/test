@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import avatar1 from '../assets/avatar1.png';
 
 const MyProfile = () => {
+    const navigate = useNavigate();
     const [userData, setUserData] = useState({
         name: "",
         bio: "",
@@ -10,6 +12,15 @@ const MyProfile = () => {
         phone: "",
         email: "",
     });
+
+    // Check if user is logged in
+    useEffect(() => {
+        const userId = localStorage.getItem('user_id');
+        if (!userId) {
+            alert('Please login to view your profile');
+            navigate('/login');
+        }
+    }, [navigate]);
 
     return (
         <div className='p-5 max-w-lg mx-auto bg-white min-h-screen text-black font-sans'>

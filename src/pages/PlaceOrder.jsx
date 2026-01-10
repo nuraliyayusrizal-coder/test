@@ -1,10 +1,12 @@
 import React from 'react';
 import { useContext } from 'react';
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { Musiccontext } from '../Context/Musiccontext';
 import { Merchcontext } from '../Context/Merchcontext';
 import { useNavigate } from 'react-router-dom';
 import fpx from '../assets/fpx.png';
+import fpx_logo from '../assets/fpx_logo.png';
 
 const PlaceOrder = () => {
     const navigate = useNavigate();
@@ -20,6 +22,28 @@ const PlaceOrder = () => {
         phone_num: ''
     });
 
+    // State for FPX bank selection
+    const [selectedBank, setSelectedBank] = useState('');
+    const [showFPXModal, setShowFPXModal] = useState(false);
+
+    // Malaysian banks for FPX
+    const malaysianBanks = [
+        'Maybank2U',
+        'CIMB Clicks',
+        'Public Bank',
+        'RHB Bank',
+        'Hong Leong Bank',
+        'AmBank',
+        'Affin Bank',
+        'Agrobank',
+        'Alliance Bank',
+        'Bank Islam',
+        'Bank Muamalat',
+        'Bank Rakyat',
+        'Bank of China',
+        'BSN'
+    ];
+
     const onChangeHandler = (e) => {
         const name = e.target.name;
         const value = e.target.value;
@@ -30,6 +54,15 @@ const PlaceOrder = () => {
     const { currency, cartItems: musicCart, musicItem, setCartItems: setMusicCart, setOrders} = useContext(Musiccontext);
     const { cartItems: merchCart, merchItem, setCartItems: setMerchCart } = useContext(Merchcontext);
     const [method, setMethod] = useState('cod');
+
+    // Check if user is logged in on component mount
+    useEffect(() => {
+        const userId = localStorage.getItem('user_id');
+        if (!userId) {
+            alert('Please login to place an order');
+            navigate('/login');
+        }
+    }, [navigate]);
 
     // Count Subtotal
     const calculateSubtotal = () => {
@@ -49,8 +82,72 @@ const PlaceOrder = () => {
         return total;
     };
 
+    // Validate form before submission
+    const validateForm = () => {
+        if (!formData.firstName.trim()) {
+            alert('Please enter your first name');
+            return false;
+        }
+        if (!formData.lastName.trim()) {
+            alert('Please enter your last name');
+            return false;
+        }
+        if (!formData.email.trim()) {
+            alert('Please enter your email address');
+            return false;
+        }
+        if (!formData.street.trim()) {
+            alert('Please enter your street address');
+            return false;
+        }
+        if (!formData.city.trim()) {
+            alert('Please enter your city');
+            return false;
+        }
+        if (!formData.state.trim()) {
+            alert('Please enter your state');
+            return false;
+        }
+        if (!formData.phone_num.trim()) {
+            alert('Please enter your phone number');
+            return false;
+        }
+        
+        // If FPX is selected, validate bank selection
+        if (method === 'fpx' && !selectedBank) {
+            alert('Please select a bank for FPX payment');
+            return false;
+        }
+
+        return true;
+    };
+
     // Handler Place Order
     const handlePlaceOrder = async () => {
+        // Validate form first
+        if (!validateForm()) {
+            return;
+        }
+
+        // If FPX payment, show payment modal
+        if (method === 'fpx') {
+            setShowFPXModal(true);
+            return;
+        }
+
+        // Process COD order
+        await processOrder('Pending');
+    };
+
+    // Process FPX Payment
+    const handleFPXPayment = async () => {
+        // Process order with "Paid" status for FPX
+        await processOrder('Paid');
+        setShowFPXModal(false);
+    };
+
+    // Process order function
+    const processOrder = async (status) => {
         let currentOrder = [];
         
         // Music Items
@@ -82,7 +179,7 @@ const PlaceOrder = () => {
             }
         }
 
-        // Prepare Payload ---
+        // Prepare Payload
         const userId = localStorage.getItem('user_id');
         const orderPayload = {
             submitOrder: true,
@@ -94,7 +191,8 @@ const PlaceOrder = () => {
             city: formData.city,
             state: formData.state,
             phone_num: formData.phone_num,
-            payment_method: method === 'cod' ? 'Cash on Delivery' : 'Online Banking',
+            payment_method: method === 'cod' ? 'Cash on Delivery' : `Online Banking (${selectedBank})`,
+            status: status,
             total_price: final_total,
             cart_items: currentOrder 
         };
@@ -122,11 +220,20 @@ const PlaceOrder = () => {
         } catch (error) {
             console.error("Database connection failed", error);
             alert("Server Error: Please check your PHP code or XAMPP connection.");
-        }  
+            return;
+        }
+        
+        setOrders((prev) => [...prev, ...currentOrder]);
+        alert("Your order has been successfully placed!");
+        
+        // Reset cart to 0
+        setMusicCart({});
+        setMerchCart({});
+        navigate('/orders');
     };
     const subtotal = calculateSubtotal();
     const delivery_fee = 8;
-    const final_total= subtotal + delivery_fee;
+    const final_total = subtotal > 0 ? subtotal + delivery_fee : 0;
 
     return (
         <div className='flex flex-col sm:flex-row justify-between gap-10 pt-14 min-h-[80vh] border-t px-5'>
@@ -173,13 +280,35 @@ const PlaceOrder = () => {
                     <div className='mt-12'>
                         <h2 className='text-lg font-bold text-[#880E4F] uppercase mb-4'>Payment Method</h2>
                         <div className='flex flex-col gap-3'>
-                            <div onClick={() => setMethod('fpx')} className='flex items-center gap-3 border border-pink-200 p-2 px-4 cursor-pointer rounded-lg bg-white hover:border-pink-500 transition-all'>
-                                <p className={`min-w-3.5 h-3.5 border border-gray-300 rounded-full ${method === 'fpx' ? 'bg-pink-500 border-pink-500' : ''}`}></p>
+                            {/* FPX Payment Option */}
+                            <div onClick={() => setMethod('fpx')} className='flex flex-col gap-3 border border-pink-200 p-3 px-4 cursor-pointer rounded-lg bg-white hover:border-pink-500 transition-all'>
                                 <div className='flex items-center gap-3'>
-                                    <img src={fpx} className='h-6 w-auto object-contain' alt="FPX" />
-                                    <span className='text-[10px] text-gray-400 font-medium'>(Online Banking)</span>
+                                    <p className={`min-w-3.5 h-3.5 border border-gray-300 rounded-full ${method === 'fpx' ? 'bg-pink-500 border-pink-500' : ''}`}></p>
+                                    <div className='flex items-center gap-3'>
+                                        <img src={fpx} className='h-6 w-auto object-contain' alt="FPX" />
+                                        <span className='text-[10px] text-gray-400 font-medium'>(Online Banking)</span>
+                                    </div>
                                 </div>
+                                
+                                {/* Bank Selection Dropdown - Only show when FPX is selected */}
+                                {method === 'fpx' && (
+                                    <div className='ml-6'>
+                                        <label className='text-xs text-gray-600 font-medium mb-1 block'>Select Your Bank:</label>
+                                        <select 
+                                            value={selectedBank} 
+                                            onChange={(e) => setSelectedBank(e.target.value)}
+                                            className='w-full border border-pink-200 rounded py-2 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-pink-500'
+                                        >
+                                            <option value="">-- Choose Bank --</option>
+                                            {malaysianBanks.map((bank, index) => (
+                                                <option key={index} value={bank}>{bank}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                )}
                             </div>
+
+                            {/* COD Payment Option */}
                             <div onClick={() => setMethod('cod')} className='flex items-center gap-3 border border-pink-200 p-2 px-4 cursor-pointer rounded-lg bg-white hover:border-pink-500 transition-all'>
                                 <p className={`min-w-3.5 h-3.5 border border-gray-300 rounded-full ${method === 'cod' ? 'bg-pink-500 border-pink-500' : ''}`}></p>
                                 <p className='text-gray-500 text-sm font-medium uppercase'>Cash On Delivery</p>
@@ -197,8 +326,42 @@ const PlaceOrder = () => {
                     </div>
                 </div>
             </div>
+
+            {/* FPX Payment Modal */}
+            {showFPXModal && (
+                <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4'>
+                    <div className='bg-white rounded-2xl p-8 max-w-md w-full shadow-2xl'>
+                        <div className='text-center'>
+                            <img src={fpx_logo} alt="FPX Logo" className='h-16 mx-auto mb-4' />
+                            <h2 className='text-2xl font-black text-[#880E4F] mb-2'>FPX Payment</h2>
+                            <p className='text-gray-600 text-sm mb-6'>Complete your payment via {selectedBank}</p>
+                            
+                            <div className='bg-pink-50 p-6 rounded-xl mb-6'>
+                                <p className='text-gray-500 text-sm mb-2'>Total Payment</p>
+                                <p className='text-4xl font-black text-[#880E4F]'>{currency} {final_total}.00</p>
+                            </div>
+
+                            <div className='flex gap-3'>
+                                <button 
+                                    onClick={() => setShowFPXModal(false)}
+                                    className='flex-1 border-2 border-pink-200 text-[#880E4F] px-6 py-3 rounded-full font-bold hover:bg-pink-50 transition'
+                                >
+                                    Cancel
+                                </button>
+                                <button 
+                                    onClick={handleFPXPayment}
+                                    className='flex-1 bg-[#880E4F] text-white px-6 py-3 rounded-full font-bold hover:bg-pink-600 transition shadow-lg'
+                                >
+                                    Make Payment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
 
+export default PlaceOrder;
 export default PlaceOrder;

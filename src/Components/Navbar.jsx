@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useContext } from 'react';
+import { useEffect } from 'react';
 import logo from '../assets/logo.png';
 import searchpinky from '../assets/searchpinky.png';
 import profilepinky from '../assets/profilepinky.png';
@@ -17,11 +18,18 @@ import { Merchcontext } from '../Context/Merchcontext';
 const Navbar = () => {
 
    const[visible,setVisible]=useState(false);
+   const[isLoggedIn, setIsLoggedIn] = useState(false);
    const navigate = useNavigate();
 
     const { cartItems: musicCart } = useContext(Musiccontext);
     const { cartItems: merchCart } = useContext(Merchcontext);
     const { setShowSearch } = useContext(Musiccontext);
+
+    // Check if user is logged in
+    useEffect(() => {
+        const userId = localStorage.getItem('user_id');
+        setIsLoggedIn(!!userId);
+    }, []);
 
     // Function to calculate cart count 
     const getCartCount = () => {
@@ -42,6 +50,24 @@ const Navbar = () => {
         }
 
         return totalCount;
+    };
+
+    // Handle logout
+    const handleLogout = () => {
+        localStorage.removeItem('user_id');
+        localStorage.removeItem('username');
+        setIsLoggedIn(false);
+        navigate('/');
+        alert('You have been logged out successfully!');
+    };
+
+    // Handle profile click
+    const handleProfileClick = () => {
+        if (!isLoggedIn) {
+            navigate('/login');
+        } else {
+            navigate('/my-profile');
+        }
     };
     return (
         <div className= 'flex items-center justify-between py-5 font-medium w-full px-5 sm:px-[5vw] bg-[#FFF5F7]'>
@@ -75,13 +101,16 @@ const Navbar = () => {
            src={searchpinky} className='w-7 h-7 cursor-pointer' alt="" />
           
            <div className='group relative'>
-               <Link to='/login'><img className='w-5 cursor-pointer' src={profilepinky} alt="" /></Link>
+               <img onClick={handleProfileClick} className='w-5 cursor-pointer' src={profilepinky} alt="" />
                 <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-2 z-[100]'>
                     <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-purple-50 text-purple-400 shadow-sm border border-purple-100'>
-                        <p onClick={() => navigate('/my-profile')} className='cursor-pointer hover:text-pink-500'>My Profile</p>    {/* CHANGE IS HERE: Added onClick navigate to the Profile link */}
-                        <Link to='/orders'><p className='cursor-pointer hover:text-pink-500'>Orders </p></Link>
-                            <p className='cursor-pointer hover:text-pink-500'>Logout </p>
-                        
+                        <p onClick={handleProfileClick} className='cursor-pointer hover:text-pink-500'>My Profile</p>
+                        <p onClick={() => navigate('/orders')} className='cursor-pointer hover:text-pink-500'>Orders</p>
+                        {isLoggedIn ? (
+                            <p onClick={handleLogout} className='cursor-pointer hover:text-pink-500'>Logout</p>
+                        ) : (
+                            <p onClick={() => navigate('/login')} className='cursor-pointer hover:text-pink-500'>Login</p>
+                        )}
                     </div>
                 </div>
            </div>
