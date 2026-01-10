@@ -8,14 +8,7 @@ const Hero = () => {
     //To store tracks from MySQL
     const [tracks, setTracks] = useState([]);
 
-    useEffect(() => {
-        // 3. Fetch data from your Express backend
-        fetch('http://localhost:5000/api/tracks')
-            .then(res => res.json())
-            .then(data => setTracks(data))
-            .catch(err => console.error("Error fetching tracks:", err));
-    }, []);
-
+    
     return (
        <div className="flex flex-col gap-20">
         {/* Hero Section */}
