@@ -14,6 +14,9 @@ const Productdetails = () => {
   const [itemType, setItemType] = useState(null);
 
   useEffect(() => {
+    // Scroll to top when component loads
+    window.scrollTo(0, 0);
+    
     const foundMusic = musicItem.find(item => item._id === id);
     const foundMerch = merchItem.find(item => item._id === id);
     

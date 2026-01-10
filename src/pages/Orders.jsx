@@ -1,11 +1,37 @@
 import React from 'react';
 import  {useContext} from 'react';
 import { Musiccontext } from '../Context/Musiccontext';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 const Orders = () => {
+    const navigate = useNavigate();
+    const { currency } = useContext(Musiccontext);
+    const [ordersHistory, setOrdersHistory] = useState([]);
     
-    const { orders, currency } = useContext(Musiccontext);
+    const fetchOrders = async () => {
+        const userId = localStorage.getItem('user_id');
+        
+        // Check if user is logged in
+        if (!userId) {
+            alert('Please login to view your orders');
+            navigate('/login');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost/test/API/get_orders.php?user_id=${userId}`);
+            const data = await response.json();
+            setOrdersHistory(data);
+        } catch (error) {
+            console.error("Error fetching orders:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchOrders();
+    }, []);
 
     return (
         <div className='pt-16 border-t px-5'>
