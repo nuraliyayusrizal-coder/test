@@ -5,7 +5,7 @@ import { createContext } from "react";
 import bp_a1 from "../assets/bp_a1.jpg";
 import bp_a2 from "../assets/bp_a2.png";
 import bp_a3 from "../assets/bp_a3.png";
-{/* bts album*/}
+{/* bts albums*/}
 import bts_a1 from "../assets/bts_a1.png";
 import bts_a2 from "../assets/bts_a2.png";
 import bts_a3 from "../assets/bts_a3.jpg";

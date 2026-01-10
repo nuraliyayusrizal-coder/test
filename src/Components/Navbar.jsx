@@ -78,7 +78,7 @@ const Navbar = () => {
                <Link to='/login'><img className='w-5 cursor-pointer' src={profilepinky} alt="" /></Link>
                 <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-2 z-[100]'>
                     <div className='flex flex-col gap-2 w-36 py-3 px-5 bg-purple-50 text-purple-400 shadow-sm border border-purple-100'>
-                        <p className='cursor-pointer hover:text-pink-500'>My Profile </p>
+                        <p onClick={() => navigate('/my-profile')} className='cursor-pointer hover:text-pink-500'>My Profile</p>    {/* CHANGE IS HERE: Added onClick navigate to the Profile link */}
                         <Link to='/orders'><p className='cursor-pointer hover:text-pink-500'>Orders </p></Link>
                             <p className='cursor-pointer hover:text-pink-500'>Logout </p>
                         
