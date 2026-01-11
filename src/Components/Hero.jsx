@@ -9,7 +9,7 @@ const Hero = () => {
        <div className="flex flex-col gap-20">
         {/* hero section */}
         <div className='flex flex-col sm:flex-row border-border-[#FFD1DC] rounded-[2.5rem] overflow-hidden bg-[#FFC1CC] shadow-2xl transition-all duration-500'>
-        {/*left side of hero */}
+        {/*left side */}
             <div className='sm:w-1/2  flex items-center justify-center p-12 sm:p-28'>
             <div className='text-[#880E4f]'>
                <div className='flex items-center gap-2 mb-4'>
@@ -58,14 +58,14 @@ const Hero = () => {
         <div className='absolute -top-20 -right-20 w-80 h-80 bg-[#FFC1CC] rounded-full blur-[120px] opacity-50 pointer-events-none'>
           </div>
 
-        {/*left side : image album (Blackpink)*/}
+        {/*side kiri : image album */}
         <div className='relative z-10 w-64 h-64 md:w-80 md:h-80 flex-shrink-0 group'>
           <div className='absolute inset-0 bg-[#C2185B] rounded-2xl rotate-6 group-hover:rotate-0 transition-all duration-500 opacity-20'>
           </div>
           <img src={top_album} alt="Born Pink Album"  className='w-full h-full object-cover rounded-2xl shadow-2xl group-hover:-translate-y-2 transition-all duration-500'  />
         </div>
 
-        {/* middle side : Info Album & Spotify Player*/}
+        {/* side tengah : Info Album & Spotify Player*/}
         <div className='relative z-10 flex-1 text-center lg:text-left'>
           <p className='text-[#C2185B] font-black tracking-[0.4em] text-xs uppercase mb-3'> Top Album : BLACKPINK</p>
           <h2 className='text-5xl md:text-7xl font-black text-[#880E4F] italic leading-none'>
@@ -92,7 +92,9 @@ const Hero = () => {
         </div>
         </div>
 
-     {/* artis spotlight section : Ariana grande */}
+
+
+     {/* artis spotlight : Ariana grande */}
      <div className='my-24 flex flex-col items-center'>
     
     <div className='text-center mb-10'>

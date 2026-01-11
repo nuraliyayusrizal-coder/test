@@ -1,4 +1,3 @@
-//to display merch context
 import React, { useContext } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -9,12 +8,11 @@ const Merch = () => {
   // to use merch data 
   const { merchItem, currency, addToCart } = useContext(Merchcontext);
   const { search, showSearch } = useContext(Musiccontext);
-  //state to filter merch
   const [filterMerch, setFilterMerch] = useState([]);
-    //to apply show search filter 
     useEffect(() => {
         let merchCopy = [...merchItem];
 
+        
         if (showSearch && search) {
             merchCopy = merchCopy.filter(item => 
                 item.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -27,13 +25,13 @@ const Merch = () => {
   return (
     <div className='pt-10 border-t border-pink-200 px-5'>
       
-      {/*title */}
+      {/* Title Page */}
       <div className='text-center mb-10'>
         <h1 className='text-[#880E4F] font-black text-3xl uppercase tracking-tighter'>Official Merchandise</h1>
         <p className='text-pink-400 text-sm font-medium'>Exclusive collection for the real fans</p>
       </div>
 
-      {/* to display merch by grid */}
+      {/* Grid Display */}
       <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 gap-y-10'>
        {filterMerch.map((item) => (
           <div key={item._id} className='group'>
@@ -73,10 +71,10 @@ const Merch = () => {
         ))}
       </div>
       
-      {/* Simple Footer when no merch available */}
+      {/* Simple Footer */}
       {merchItem.length === 0 && (
         <p className='text-center py-20 text-gray-400'>No merchandise available at the moment.</p>
-      )} 
+      )}
     </div>
   );
 };

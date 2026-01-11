@@ -10,11 +10,11 @@ const Footer = () => {
             
             <div className='flex flex-col md:grid grid-cols-[2fr_1fr_1.5fr] gap-16 text-sm'>
                 
-                {/*  Logo */}
+                {/*  Logo & Tagline */}
                 <div className="flex flex-col items-center md:items-start">
                     <img src={logo} className='w-28 mb-4 hover:rotate-6 transition-transform' alt="Logo" />
                 
-                  {/* tagline */}
+                
                 <p className="text-3xl font-bold text-[#880E4F] italic">
                  "Where the precision of the Algorithm <br /> meets the soul of the Rhythm."  </p>
                 </div> 

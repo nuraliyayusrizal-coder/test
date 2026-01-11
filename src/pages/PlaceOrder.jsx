@@ -79,7 +79,7 @@ const PlaceOrder = () => {
     return (
         <div className='flex flex-col sm:flex-row justify-between gap-10 pt-14 min-h-[80vh] border-t px-5'>
             
-            {/* Delivery info */}
+            {/* Delivery Form */}
             <div className='flex flex-col gap-4 w-full sm:max-w-[480px]'>
                 <h1 className='text-2xl font-black text-[#880E4F] mb-4 uppercase'>Delivery Information</h1>
                 <div className='flex gap-3'>
@@ -137,7 +137,6 @@ const PlaceOrder = () => {
                         </div>
 
                         <div className='w-full text-end mt-8'>
-                        {/*button to place order*/}
                             <button 
                                 onClick={handlePlaceOrder}
                                 className='bg-[#880E4F] text-white px-16 py-3 text-sm font-bold rounded-full hover:bg-pink-600 transition uppercase shadow-lg w-full sm:w-auto'

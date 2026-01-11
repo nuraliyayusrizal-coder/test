@@ -1,49 +1,47 @@
-{/* to store merch context to display on merch page*/}
-import React from "react";
 import { useState } from "react";
 import { createContext } from "react";
-{/*Blackpink merch*/}
+//Blackpink merch
 import bp_m1 from '../assets/bp_m1.jpg';
 import bp_m2 from '../assets/bp_m2.jpg';
-{/*Bts merch*/}
+//Bts merch
 import bts_m1 from '../assets/bts_m1.jpg';
 import bts_m2 from '../assets/bts_m2.png';
-{/*Treasure merch*/}
+//Treasure merch
 import trea_m1 from '../assets/trea_m1.jpg';
 import trea_m2 from '../assets/trea_m2.jpg';
-{/*Twice merch*/}
+//Twice merch
 import twice_m1 from '../assets/twice_m1.jpg';
 import twice_m2 from '../assets/twice_m2.jpg';
-{/*Justin Bieber merch*/}
+//Justin Bieber merch
 import jb_m1 from '../assets/jb_m1.png';
 import jb_m2 from '../assets/jb_m2.png';
-{/*Dua lipa merch*/}
+//Dua lipa merch
 import dl_m1 from '../assets/dl_m1.png';
 import dl_m2 from '../assets/dl_m2.png';
-{/*Maroon 5  merch*/}
+//Maroon 5  merch
 import m_m1 from '../assets/m_m1.png';
 import m_m2 from '../assets/m_m2.png';
-{/*Ariana grande merch*/}
+//Ariana grande merch
 import ag_m1 from '../assets/ag_m1.png';
 import ag_m2 from '../assets/ag_m2.png';
-{/*Exist merch*/}
+//Exist merch
 import exist_m1 from '../assets/exist_m1.png';
-{/*Awie merch*/}
+//Awie merch
 import awie_m1 from '../assets/awie_m1.png';
 import awie_m2 from '../assets/awie_m2.png';
-{/*Xpdc merch*/}
+//Xpdc merch
 import xpdc_m1 from '../assets/xpdc_m1.png';
 import xpdc_m2 from '../assets/xpdc_m2.png';
-{/*yuna merch*/}
+//yuna merch
 import yuna_m1 from '../assets/yuna_m1.png';
 import yuna_m2 from '../assets/yuna_m2.png';
-{/*insomniacks merch*/}
+//insomniacks merch
 import insom_m1 from '../assets/insom_m1.png';
 import insom_m2 from '../assets/insom_m2.png';
-{/*Dolla merch*/}
+//Dolla merch
 import dolla_m1 from '../assets/dolla_m1.png';
 import dolla_m2 from '../assets/dolla_m2.png';
-{/*Alyph merch*/}
+//Alyph merch
 import alyph_m1 from '../assets/alyph_m1.png';
 
  export const Merchcontext = createContext();
@@ -306,14 +304,11 @@ import alyph_m1 from '../assets/alyph_m1.png';
 ]
 
 
-//add to cart state to store add to cart items (music/merch)
+//function to add to cart
 const [cartItems, setCartItems] = useState({});
-//search state to search music/merch
+//funtion to search
 const [search, setSearch] = useState('')
-// show search state to show search music/merch
 const [showSearch, setShowSearch] = useState(false);
-
-// function to add to cart 
     const addToCart = (itemId) => {
         setCartItems((prev) => ({...prev,
          [itemId]: (prev[itemId] || 0) + 1  }));
@@ -329,7 +324,6 @@ const updateQuantity = async (itemId, quantity) => {
 const getCartCount = () => {
     return Object.values(cartItems).reduce((total, qty) => total + qty, 0);
 };
-    // to allow this data to be access 
     const value = { 
         merchItem, 
         currency: "RM", 

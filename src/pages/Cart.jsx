@@ -12,11 +12,10 @@ const Cart = () => {
  const { musicItem, cartItems: musicCart, currency, updateQuantity: updateMusicQty } = useContext(Musiccontext);
  const { merchItem, cartItems: merchCart, updateQuantity: updateMerchQty } = useContext(Merchcontext);
  const navigate = useNavigate();
-    // state to set cart data 
     const [cartData, setCartData] = useState([]);
-    const delivery_fee=8; // to store delivery fee  to RM8
+    const delivery_fee=8; // delivery fee are constant to RM8
     
-        // to make sure all items (music/ merch) that are succesfully added to cart show up on the cart page 
+
       useEffect(() => {
         const tempData = [];
 
@@ -72,7 +71,6 @@ const subTotal = cartData.reduce((acc, item) => acc + (item.price * item.quantit
                                 <p className='text-sm sm:text-lg font-black text-[#880E4F] uppercase'>{item.name}</p>
                                 <div className='flex items-center gap-5 mt-2'>
                                     <p className='font-bold text-gray-700'>{currency}{item.price}</p>
-                                    {/*to manage quantity input*/}
                                     <div className='flex items-center gap-2'>
                                      <p className='text-xs font-bold text-gray-500'>QTY:</p>
                                      <input 
@@ -95,12 +93,12 @@ const subTotal = cartData.reduce((acc, item) => acc + (item.price * item.quantit
                                 </div>
                             </div>
                         </div>
-                        {/*to display  item total*/}
+
                         <div className='flex items-center gap-4'>
                             <div className='text-right'>
                                 <p className='font-black text-lg'>{currency}{item.price * item.quantity}</p>
                             </div>
-                           {/*delete button*/}
+                           
                             <img
                                 onClick={() => item.type === 'music' ? updateMusicQty(item._id, 0) : updateMerchQty(item._id, 0)}
                                 src={bin}
@@ -112,7 +110,7 @@ const subTotal = cartData.reduce((acc, item) => acc + (item.price * item.quantit
                 ))}
             </div>
 
-            {/* Checkout info */}
+            {/* Checkout */}
             {cartData.length > 0 ? (
                 <div className='flex justify-end my-20'>
                     <div className='w-full sm:w-[450px]'>

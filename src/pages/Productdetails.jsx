@@ -1,4 +1,3 @@
-// to display product (music/merch details ) when customer click on the product 
 import React from "react";
 import { useParams } from "react-router-dom";
 import { Musiccontext } from "../Context/Musiccontext";
@@ -9,7 +8,6 @@ import { useEffect } from "react";
 
 const Productdetails = () => {
   const { id } = useParams();
-  // to use music & merch data 
   const { musicItem, addToCart: addMusic } = useContext(Musiccontext);
   const { merchItem, addToCart: addMerch } = useContext(Merchcontext);
   const [product, setProduct] = useState(null);

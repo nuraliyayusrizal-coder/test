@@ -3,8 +3,9 @@ import React from 'react';
 import  {useContext} from 'react';
 import { Musiccontext } from '../Context/Musiccontext';
 
+
 const Orders = () => {
-    // to use order data from music context (this include music and merch order)
+    
     const { orders, currency } = useContext(Musiccontext);
 
     return (
@@ -37,15 +38,13 @@ const Orders = () => {
                                     <p className='min-w-2 h-2 rounded-full bg-green-500'></p>
                                     <p className='text-sm md:text-base font-medium uppercase tracking-wider text-green-600'>Order Placed</p>
                                 </div>
-                                {/*button track order*/}
                                 <button className='border px-4 py-2 text-sm font-bold rounded-full bg-white text-[#880E4F] border-pink-200 hover:bg-pink-50 transition'>
                                     Track Order
                                 </button>
                             </div>
                         </div>
                     ))
-                ) : 
-                (// if order not found 
+                ) : (
                     <div className='text-center py-20 text-gray-400'>
                         <p>No orders found. Keep supporting your artist!</p>
                     </div>

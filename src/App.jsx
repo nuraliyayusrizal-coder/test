@@ -11,6 +11,7 @@ import Navbar from './Components/Navbar';
 import Music from './pages/Music';
 import Footer from './Components/Footer';
 import Productdetails from './pages/Productdetails';
+import ArtistDetail from './pages/ArtistDetail';
 import Searchbar from './Components/Searchbar';
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
        <Route path="/music" element={<Music/>} />
        <Route path="/merch" element={<Merch/>} />
        <Route path="/artist" element={<Artis/>} />
+       <Route path="/artist/:artistName" element={<ArtistDetail/>} />
        <Route path="/cart" element={<Cart/>} />
        <Route path="/login" element={<Login/>} />
        <Route path="/place-order" element={<PlaceOrder/>} />

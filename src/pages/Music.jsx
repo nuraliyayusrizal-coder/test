@@ -6,14 +6,14 @@ import { Musiccontext } from '../Context/Musiccontext';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 const Music = () => {
-  // to use music data
+  
   const { musicItem, addToCart, search, showSearch } = useContext(Musiccontext);
-  // state to show filter , set filter and set category
+  
   const [showFilter, setShowFilter] = useState(false);
   const [filterMusic, setFilterMusic] = useState([]);
   const [category, setCategory] = useState([]); 
 
-  // Function handle categorycheckbox
+  // Function handle checkbox
   const toggleCategory = (e) => {
     if (category.includes(e.target.value)) {
       setCategory(prev => prev.filter(item => item !== e.target.value));
@@ -22,24 +22,27 @@ const Music = () => {
     }
   };
 
-  // to apply filter
+  
   const applyFilter = () => {
     let musicCopy = [...musicItem];
-    // to show search filter 
+
+    
     if (showSearch && search) {
       musicCopy = musicCopy.filter(item => 
         item.name.toLowerCase().includes(search.toLowerCase()) || 
         item.artis.toLowerCase().includes(search.toLowerCase())
       );
     }
-    // Category Filter
+
+    // 2. Category Filter
     if (category.length > 0) {
       musicCopy = musicCopy.filter(item => category.includes(item.category));
     }
+
     setFilterMusic(musicCopy);
   };
 
-  //to apply filter 
+  
   useEffect(() => {
     applyFilter();
   }, [category, search, showSearch, musicItem]);
@@ -63,13 +66,13 @@ const Music = () => {
           </div>
         </div>
       </div>
-    
+
+      {/* Music Grid Section */}
       <div className='flex-1'>
         <div className='flex justify-between items-center mb-6'>
             <h1 className='text-[#880E4F] font-black text-2xl uppercase'>Music Collection</h1>
             {showSearch && search && <p className='text-sm text-pink-400 italic'>Showing results for "{search}"</p>}
         </div>
-        {/*to display music by grid*/}
         <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
           {filterMusic.length > 0 ? (
             filterMusic.map((item) => (
@@ -78,10 +81,8 @@ const Music = () => {
                   <Link to={`/product/${item._id}`}>
                     <img src={item.image[0]} alt={item.name} className='w-full h-full object-cover group-hover:scale-110 transition duration-500' />
                   </Link>
-                  {/* add to cart button*/}
                   <button onClick={() => addToCart(item._id)} className='absolute bottom-2 right-2 bg-[#880E4F] text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-pink-600 transition shadow-lg font-bold'>+</button>
                 </div>
-                {/*music info*/}
                 <div className='mt-3 text-center'>
                   <p className='text-[10px] text-pink-400 font-bold uppercase'>{item.artis}</p>
                   <h3 className='font-black text-[#880E4F] text-sm uppercase truncate px-2'>{item.name}</h3>
@@ -89,8 +90,7 @@ const Music = () => {
                 </div>
               </div>
             ))
-          ) : 
-          ( // if no music meet the filter condition
+          ) : (
             <div className='col-span-full text-center py-20 text-gray-400 italic'>
                 No music collection found. Try a different search!
             </div>
