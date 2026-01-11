@@ -1,11 +1,11 @@
 <?php 
-// 1. Header paling penting untuk React (CORS)
+// 1. Header for React (CORS)
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 header("Content-Type: application/json; charset=UTF-8");
 
-// 2. Handle 'OPTIONS' request (React akan hantar ni dulu sebelum POST)
+// 2. Handle 'OPTIONS' request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
@@ -13,13 +13,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 include 'connect.php';
 
-// 3. Tangkap data JSON dari React
+// 3. Catch data JSON from React
 $content = file_get_contents("php://input");
 $data = json_decode($content, true);
 
-// Debugging: Kalau kau nak check data masuk ke tak, boleh tengok kat Network tab
+// Debugging
 if (!$data) {
     echo json_encode(["error" => "No data received or invalid JSON"]);
+    exit;
+}
+
+if (isset($data['updateStatus'])) {
+    $order_id = $conn->real_escape_string($data['order_id']);
+    $newStatus = $conn->real_escape_string($data['status']);
+
+    $sqlUpdate = "UPDATE orders SET status = '$newStatus' WHERE order_id = '$order_id'";
+
+    if ($conn->query($sqlUpdate) === TRUE) {
+        echo json_encode(["message" => "Status updated to $newStatus successfully!"]);
+    } else {
+        echo json_encode(["error" => "Update Error: " . $conn->error]);
+    }
     exit;
 }
 
@@ -34,11 +48,12 @@ if (isset($data['submitOrder'])) {
     $phone_num = $conn->real_escape_string($data['phone_num']);
     $payment = $conn->real_escape_string($data['payment_method']);
     $total_price = $conn->real_escape_string($data['total_price']);
+    $status = $conn->real_escape_string($data['status']);
     $items   = $data['cart_items']; 
 
-    $sqlOrder = "INSERT INTO orders (user_id, firstName, lastName, email_address, street, city, state, phone_num, payment_method, total_price) 
-                 VALUES ('$user_id', '$fName', '$lName', '$email', '$street', '$city', '$state', '$phone_num', '$payment', '$total_price')";
-
+    $sqlOrder = "INSERT INTO orders (user_id, firstName, lastName, email_address, street, city, state, phone_num, payment_method, total_price, status) 
+                 VALUES ('$user_id', '$fName', '$lName', '$email', '$street', '$city', '$state', '$phone_num', '$payment', '$total_price', '$status')";
+    
     if ($conn->query($sqlOrder) === TRUE) {
         $order_id = $conn->insert_id; 
 
@@ -62,7 +77,6 @@ if (isset($data['submitOrder'])) {
         echo json_encode(["error" => "Database Error: " . $conn->error]);
     }
 } else {
-    // Kalau 'submitOrder' tak ada dalam JSON
     echo json_encode(["error" => "submitOrder trigger not found"]);
 }
 ?>

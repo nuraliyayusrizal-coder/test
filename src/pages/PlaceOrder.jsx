@@ -23,6 +23,7 @@ const PlaceOrder = () => {
     });
 
     // State for FPX bank selection
+    const [currentOrderId, setCurrentOrderId] = useState(null);
     const [selectedBank, setSelectedBank] = useState('');
     const [showFPXModal, setShowFPXModal] = useState(false);
 
@@ -129,26 +130,48 @@ const PlaceOrder = () => {
             return;
         }
 
-        // If FPX payment, show payment modal
-        if (method === 'fpx') {
-            setShowFPXModal(true);
-            return;
-        }
+        // Store for both methods (COD & FPX)
+        const isSuccess = await processOrder('Pending');
 
-        // Process COD order
-        await processOrder('Pending');
+        // If successful and method is FPX, show modal
+        if (isSuccess && method === 'fpx') {
+           setShowFPXModal(true);
+       }
     };
 
     // Process FPX Payment
     const handleFPXPayment = async () => {
-        // Process order with "Paid" status for FPX
-        await processOrder('Paid');
-        setShowFPXModal(false);
+    try {
+            const response = await fetch('http://localhost/test/API/order.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    updateStatus: true,
+                    order_id: currentOrderId,
+                    status: 'Paid'
+                })
+            });
+            const result = await response.json();
+
+            if (result.message) {
+                alert("Payment Successful! Database updated to Paid.");
+                setMusicCart({});
+                setMerchCart({});
+                setShowFPXModal(false);
+                navigate('/orders');
+            } else {
+                alert("Error updating status: " + result.error);
+            }
+        } catch (error) {
+            console.error("Update failed", error);
+            alert("Connection error during payment update.");
+        }
     };
 
     // Process order function
     const processOrder = async (status) => {
         let currentOrder = [];
+        const userId = localStorage.getItem('user_id');
         
         // Music Items
         for (const id in musicCart) {
@@ -180,7 +203,6 @@ const PlaceOrder = () => {
         }
 
         // Prepare Payload
-        const userId = localStorage.getItem('user_id');
         const orderPayload = {
             submitOrder: true,
             user_id: userId,
@@ -207,29 +229,25 @@ const PlaceOrder = () => {
             const result = await response.json();
             
             if (result.message) {
+                setCurrentOrderId(result.order_id);
                 setOrders((prev) => [...prev, ...currentOrder]);
-                alert("Your order has been successfully placed!");
                 
-                // Reset cart
-                setMusicCart({});
-                setMerchCart({});
-                navigate('/orders');
+                if(method === 'cod'){
+                    alert("Your order has been successfully placed!");
+                    setMusicCart({});
+                    setMerchCart({});
+                    navigate('/orders');
+                }
+                return true;
             } else {
                 alert("Error: " + result.error);
+                return false;
             }
         } catch (error) {
             console.error("Database connection failed", error);
             alert("Server Error: Please check your PHP code or XAMPP connection.");
-            return;
+            return false;
         }
-        
-        setOrders((prev) => [...prev, ...currentOrder]);
-        alert("Your order has been successfully placed!");
-        
-        // Reset cart to 0
-        setMusicCart({});
-        setMerchCart({});
-        navigate('/orders');
     };
     const subtotal = calculateSubtotal();
     const delivery_fee = 8;
