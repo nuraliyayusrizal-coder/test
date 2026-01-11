@@ -2,61 +2,61 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { createContext } from "react";
-{/* blackpink album */ }
+//blackpink album 
 import bp_a1 from "../assets/bp_a1.jpg";
 import bp_a2 from "../assets/bp_a2.png";
 import bp_a3 from "../assets/bp_a3.png";
-{/* bts album*/}
+// bts album
 import bts_a1 from "../assets/bts_a1.png";
 import bts_a2 from "../assets/bts_a2.png";
 import bts_a3 from "../assets/bts_a3.jpg";
-{/*treasure album*/}
+//treasure album
 import trea_a1 from "../assets/trea_a1.png";
 import trea_a2 from "../assets/trea_a2.png";
 import trea_a3 from "../assets/trea_a3.png";
-{/*twice album */}
+//twice album 
 import twice_a1 from "../assets/twice_a1.png";
 import twice_a2 from "../assets/twice_a2.jpg";
-{/*justin bieber album */}
+//justin bieber album 
 import jb_a1 from "../assets/jb_a1.png";
 import jb_a2 from "../assets/jb_a2.png";
 import jb_a4 from "../assets/jb_a4.png";
 import jb_a6 from "../assets/jb_a6.png";
 import jb_a7 from "../assets/jb_a7.jpg";
-{/*dua lipa album */}
+//dua lipa album 
 import  dl_a1 from "../assets/dl_a1.png";
 import  dl_a3 from "../assets/dl_a3.png";
 import  dl_a4 from "../assets/dl_a4.png";
-{/*maroon 5 album */}
+//maroon 5 album 
 import m_a1 from "../assets/m_a1.png";
 import m_a3 from "../assets/m_a3.png";
 import m_a4 from "../assets/m_a4.png";
-{/*ariana grande album*/}
+//ariana grande album
 import ag_a1 from "../assets/ag_a1.png";
 import ag_a2 from "../assets/ag_a2.png";
 import ag_a5 from "../assets/ag_a5.png";
-{/*exist album*/}
+//exist album
 import exist_a1 from "../assets/exist_a1.jpg";
 import exist_a2 from "../assets/exist_a2.jpg";
-{/*awie album*/}
+//awie album
 import awie_a1 from "../assets/awie_a1.jpg";
 import awie_a2 from "../assets/awie_a2.jpg";
-{/*mazleela*/}
+//mazleela
 import mazleela_a1 from "../assets/mazleela_a1.jpg";
-{/*xpdc album*/}
+//xpdc album
 import xpdc_a1 from "../assets/xpdc_a1.png";
-{/*yuna album*/}
+//yuna album
 import yuna_a1 from "../assets/yuna_a1.png";
 import yuna_a2 from "../assets/yuna_a2.png";
 import yuna_a3 from "../assets/yuna_a3.png";
-{/*insomniacks album*/}
+//insomniacks album
 import insom_a1 from "../assets/insom_a1.png";
 import insom_a2 from "../assets/insom_a2.png";
 import insom_a3 from "../assets/insom_a3.png";
-{/*dolla album*/}
+//dolla album
 import dolla_a1 from "../assets/dolla_a1.png";
 import dolla_a2 from "../assets/dolla_a2.png";
-{/*alyph album*/}
+//alyph album
 import alyph_a1 from "../assets/alyph_a1.png";
 
 export const Musiccontext = createContext();
@@ -75,7 +75,7 @@ const MusiccontextProvider = (props) => {
         category:"Album", 
     },
      //blackpink//
-    {
+    { 
         _id: "m002",
         name:"The Album",
         artis: "Blackpink",
@@ -110,22 +110,22 @@ const MusiccontextProvider = (props) => {
     //bts//
     {
         _id: "m005",
+        name:"Boy in Luv",
+        artis: "Bts",
+        desciption:"The Boy In Luv CD single (2014) includes Japanese versions of Boy In Luv, N.O., and Just One Day, with regular CD and limited CD+DVD editions",
+        price:550,
+        image :[bts_a2],
+        genre:"Kpop",
+        category:"Album", 
+    },
+    //bts// 
+    {
+        _id: "m006",
         name:"Love Yourself",
         artis: "Bts",
         desciption:"A collectible K‑pop album featuring BTS’s Love Yourself series. Includes CD, photobook, random photocard, poster, and lyric paper. Available in multiple versions with unique designs and inclusions",
         price:550,
         image :[bts_a3],
-        genre:"Kpop",
-        category:"Album", 
-    },
-    //bts//
-    {
-        _id: "m006",
-        name:"Boy In Love",
-        artis: "Bts",
-        desciption:"The Boy In Luv CD single (2014) includes Japanese versions of Boy In Luv, N.O., and Just One Day, with regular CD and limited CD+DVD editions",
-        price:550,
-        image :[bts_a2],
         genre:"Kpop",
         category:"CD", 
     },
