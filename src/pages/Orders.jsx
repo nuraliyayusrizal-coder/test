@@ -1,12 +1,37 @@
-// to display order page
-import React from 'react';
+import React, { useState } from 'react';
 import  {useContext} from 'react';
 import { Musiccontext } from '../Context/Musiccontext';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 const Orders = () => {
+    const navigate = useNavigate();
+    const { currency } = useContext(Musiccontext);
+    const [ordersHistory, setOrdersHistory] = useState([]);
     
-    const { orders, currency } = useContext(Musiccontext);
+    const fetchOrders = async () => {
+        const userId = localStorage.getItem('user_id');
+        
+        // Check if user is logged in
+        if (!userId) {
+            alert('Please login to view your orders');
+            navigate('/login');
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost/test/API/get_orders.php?user_id=${userId}`);
+            const data = await response.json();
+            setOrdersHistory(data);
+        } catch (error) {
+            console.error("Error fetching orders:", error);
+        }
+    };
+
+    useEffect(() => {
+        fetchOrders();
+    }, []);
 
     return (
         <div className='pt-16 border-t px-5'>
@@ -16,20 +41,26 @@ const Orders = () => {
 
             <div>
             {/*to display order info*/}
-                {orders && orders.length > 0 ? (
-                    orders.map((item, index) => (
+                {ordersHistory && ordersHistory.length > 0 ? (
+                    ordersHistory.map((item, index) => (
                         <div key={index} className='py-4 border-b border-pink-100 text-gray-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4'>
                             <div className='flex items-start gap-6 text-sm'>
-                                <img className='w-16 sm:w-20 rounded-lg shadow-sm' src={item.image[0]} alt="" />
+                                {/*Match with JSON: image_url */}
+                                <img className='w-16 sm:w-20 rounded-lg shadow-sm' src={item.image_url} alt="" />
                                 <div>
-                                    <p className='text-xs text-pink-500 font-bold uppercase'>{item.artis}</p>
-                                    <p className='sm:text-base font-black text-[#880E4F] uppercase'>{item.name}</p>
-                                    <div className='flex items-center gap-3 mt-2 text-base text-gray-700'>
-                                        <p className='font-bold'>{currency}{item.price}</p>
-                                        <p>Quantity: {item.quantity}</p>
-                                        <p className='text-[10px] bg-slate-100 px-2 rounded'>{item.type}</p>
+                                    {/* Match dengan JSON: product_name */}
+                                    <p className='sm:text-lg font-black text-[#880E4F] uppercase leading-tight'>{item.product_name}</p>
+                                    <div className='flex items-center gap-4 mt-2 text-base text-gray-600 font-medium'>
+                                        <p>{currency}{item.price}</p>
+                                        <p className='bg-pink-50 px-2 py-0.5 rounded text-pink-600 text-xs'>Qty: {item.quantity}</p>
                                     </div>
-                                    <p className='mt-2 text-xs'>Date: <span className='text-gray-400'>{item.date}</span></p>
+                                    {/* Match dengan JSON: created_at dan order_id */}
+                                    <p className='mt-3 text-[11px] text-gray-400'>
+                                        Date: <span className='text-gray-500'>{item.created_at}</span>
+                                    </p>
+                                    <p className='text-[10px] font-bold text-pink-300 tracking-widest uppercase'>
+                                        Order ID: #{item.order_id}
+                                    </p>
                                 </div>
                             </div>
 

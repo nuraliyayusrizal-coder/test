@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createContext } from "react";
-//Blackpink merch
+import React, { useEffect } from "react";
+{/*Blackpink merch*/}
 import bp_m1 from '../assets/bp_m1.jpg';
 import bp_m2 from '../assets/bp_m2.jpg';
 //Bts merch
@@ -309,17 +310,93 @@ const [cartItems, setCartItems] = useState({});
 //funtion to search
 const [search, setSearch] = useState('')
 const [showSearch, setShowSearch] = useState(false);
-    const addToCart = (itemId) => {
-        setCartItems((prev) => ({...prev,
-         [itemId]: (prev[itemId] || 0) + 1  }));
-        alert("Successfully added to cart!");
-};
+
+// Fetch cart from backend on component mount
+    useEffect(() => {
+        const fetchUserCart = async () => {
+            const userId = localStorage.getItem('user_id');
+            if (!userId) return; 
+
+                try {
+                    const response = await fetch(`http://localhost/test/API/get_cart.php?user_id=${userId}`);
+                    const data = await response.json();
+                    
+                    if (Array.isArray(data)) {
+                        let tempCart = {};
+                        data.forEach(item => {
+                            if (item.product_id.startsWith('mh')) {
+                                tempCart[item.product_id] = parseInt(item.quantity);
+                            }
+                        });
+                        setCartItems(tempCart);
+                    }
+                } catch (error) {
+                    console.error("Error, cannot sync to merch cart:", error);
+                }
+            };
+        fetchUserCart();
+    }, []);
+    
+
+    // Update to database 
+const addToCart = async (itemId) => {
+    setCartItems((prev) => ({...prev,
+        [itemId]: (prev[itemId] || 0) + 1  
+    }));
+
+// Save to Database
+    const userId = localStorage.getItem('user_id');
+    const product = merchItem.find(p => p._id === itemId);
+
+        if (userId && product) {
+            try {
+                await fetch('http://localhost/test/API/add_to_cart.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        product_id: itemId,
+                        name: product.name,
+                        price: product.price,
+                        image: product.image[0]
+                    })
+                });
+                alert("Successfully added merch to cart!");
+            } catch (error) {
+                console.error("Error, cannot save into database:", error);
+            }
+        }
+    };
+
 //function to updateQuantity 
 const updateQuantity = async (itemId, quantity) => {
         let cartData = structuredClone(cartItems);
-        cartData[itemId] = quantity;
+        if (quantity === 0) {
+            delete cartData[itemId];
+        } else {
+            cartData[itemId] = quantity;
+        }
         setCartItems(cartData);
-};
+
+// Update Database
+        const userId = localStorage.getItem('user_id');
+        if (userId) {
+            try {
+                await fetch('http://localhost/test/API/update_cart.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        product_id: itemId,
+                        quantity: quantity
+                    })
+                });
+            } catch (error) {
+                console.error("Gagal update database merch:", error);
+            }
+        }
+    };
+
 //function to get cart count
 const getCartCount = () => {
     return Object.values(cartItems).reduce((total, qty) => total + qty, 0);
