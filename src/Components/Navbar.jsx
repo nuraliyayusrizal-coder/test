@@ -69,16 +69,16 @@ const { setShowSearch } = useContext(Musiccontext);
         }
     };
     return (
-<div className= 'flex items-center justify-between py-5 font-medium w-full px-5 sm:px-[5vw] bg-[#FFF5F7]'>
+    <div className= 'flex items-center justify-between py-5 font-medium w-full px-5 sm:px-[5vw] bg-[#FFF5F7]'>
 {/* to back to home page when click on logo*/}
 <Link to='/'>
         <img src={logo}  className='w-36 cursor-pointer' alt="logo" />
         </Link>
 
-            {/*menu on the navbar*/}
+        {/*menu on the navbar*/}
 <ul className='hidden sm:flex gap-5 text-sm text-pink-500'>
     {/*music menu*/}
-    <NavLink to="/music" className='flex flex-col items-center gap-1'>
+ <NavLink to="/music" className='flex flex-col items-center gap-1'>
                     {({ isActive }) => (
                         <>
                             <p>Music</p>
@@ -103,19 +103,8 @@ const { setShowSearch } = useContext(Musiccontext);
                             <hr className={`w-2/4 border-none h-[1.5px] bg-pink-500 ${isActive ? 'block' : 'hidden'}`} />
                         </>
                     )}
-                </NavLink> 
-                 {/*artist*/}
-                <NavLink to="/artist" className='flex flex-col items-center gap-1'>
-                    <p>Artist</p>
-                    <hr className='w-2/4 border-none h-[1.5px] bg-pink-500 hidden'/>
-                </NavLink> 
-                 {/*merch*/}
-                <NavLink to="/merch" className='flex flex-col items-center gap-1 '>
-                    <p>Merch</p>
-                    <hr className='w-2/4 border-none h-[1.5px] bg-pink-500 hidden'/>
-                </NavLink> 
-        </ul> 
-        
+</NavLink> 
+    </ul> 
         <div className='flex items-center gap-6'>
            <img 
            onClick={() => setShowSearch(true)}
