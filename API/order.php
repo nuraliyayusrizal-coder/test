@@ -1,14 +1,27 @@
 <?php 
+// 1. Header paling penting untuk React (CORS)
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type");
-header("Content-Type: application/json");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Content-Type: application/json; charset=UTF-8");
 
-if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') { exit; }
+// 2. Handle 'OPTIONS' request (React akan hantar ni dulu sebelum POST)
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
 
 include 'connect.php';
 
-$data = json_decode(file_get_contents("php://input"), true);
+// 3. Tangkap data JSON dari React
+$content = file_get_contents("php://input");
+$data = json_decode($content, true);
+
+// Debugging: Kalau kau nak check data masuk ke tak, boleh tengok kat Network tab
+if (!$data) {
+    echo json_encode(["error" => "No data received or invalid JSON"]);
+    exit;
+}
 
 if (isset($data['submitOrder'])) {
     $user_id = $conn->real_escape_string($data['user_id']);
@@ -20,15 +33,11 @@ if (isset($data['submitOrder'])) {
     $state   = $conn->real_escape_string($data['state']);
     $phone_num = $conn->real_escape_string($data['phone_num']);
     $payment = $conn->real_escape_string($data['payment_method']);
-    $status  = $conn->real_escape_string($data['status']);
-    
-    // From React- default with RM8 delivery fee
     $total_price = $conn->real_escape_string($data['total_price']);
-    
-    $items = $data['cart_items']; 
+    $items   = $data['cart_items']; 
 
-    $sqlOrder = "INSERT INTO orders (user_id, firstName, lastName, email, street, city, state, phone_num, payment_method, status, total_price) 
-                 VALUES ('$user_id', '$fName', '$lName', '$email', '$street', '$city', '$state', '$phone_num', '$payment', '$status', '$total_price')";
+    $sqlOrder = "INSERT INTO orders (user_id, firstName, lastName, email_address, street, city, state, phone_num, payment_method, total_price) 
+                 VALUES ('$user_id', '$fName', '$lName', '$email', '$street', '$city', '$state', '$phone_num', '$payment', '$total_price')";
 
     if ($conn->query($sqlOrder) === TRUE) {
         $order_id = $conn->insert_id; 
@@ -48,9 +57,12 @@ if (isset($data['submitOrder'])) {
         $sqlClearCart = "DELETE FROM cart WHERE user_id = '$user_id'";
         $conn->query($sqlClearCart);
 
-        echo json_encode(["message" => "Success", "order_id" => $order_id]);
+        echo json_encode(["message" => "Order successfully placed!", "order_id" => $order_id]);
     } else {
-        echo json_encode(["error" => $conn->error]);
+        echo json_encode(["error" => "Database Error: " . $conn->error]);
     }
+} else {
+    // Kalau 'submitOrder' tak ada dalam JSON
+    echo json_encode(["error" => "submitOrder trigger not found"]);
 }
 ?>
